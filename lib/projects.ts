@@ -42,9 +42,10 @@ export const projects: Project[] = [
   {
     title: "Transfer Agent",
     description:
-      "Agent-based transfer system built in Go. Handles automated data routing and message passing between distributed components.",
-    tech: ["Go", "Distributed Systems"],
+      "Full-stack file transfer platform with TCP peer-to-peer transfers and web dashboard. Features drag-and-drop upload, real-time progress via WebSocket, shareable download links, SHA-256 checksum verification, path traversal protection, and concurrent connection handling. Deployed with Go backend on Render and Next.js frontend on Vercel.",
+    tech: ["Go", "Next.js", "WebSocket", "TCP/IP", "Docker"],
     github: "https://github.com/s-Himansh/TRANSFER-AGENT",
+    demo: "https://transfer-agent-dashboard.vercel.app",
   },
   {
     title: "Hospital Management System",
