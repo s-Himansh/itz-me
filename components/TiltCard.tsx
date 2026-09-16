@@ -17,6 +17,9 @@ export default function TiltCard({ children, className = "" }: TiltCardProps) {
     const card = cardRef.current;
     if (!card) return;
 
+    // Skip tilt effect on touch devices
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;

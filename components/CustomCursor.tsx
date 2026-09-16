@@ -31,6 +31,7 @@ export default function CustomCursor() {
     let mouseY = 0;
     let cursorX = 0;
     let cursorY = 0;
+    let rafId: number;
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
@@ -45,7 +46,7 @@ export default function CustomCursor() {
       cursorX += (mouseX - cursorX) * 0.15;
       cursorY += (mouseY - cursorY) * 0.15;
       cursor.style.transform = `translate(${cursorX - 20}px, ${cursorY - 20}px)`;
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     };
 
     const handleMouseDown = () => setIsClicking(true);
@@ -88,6 +89,7 @@ export default function CustomCursor() {
     animate();
 
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
