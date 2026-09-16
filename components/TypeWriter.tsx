@@ -54,9 +54,15 @@ export default function TypeWriter({
   ]);
 
   return (
-    <span className="font-mono">
-      {currentText}
-      <span className="ml-0.5 inline-block h-[1.1em] w-[2px] animate-pulse bg-violet-500" />
+    <span
+      className="font-mono"
+      aria-label={texts[0]}
+      aria-busy={currentText !== texts[currentTextIndex] || isDeleting}
+    >
+      <span aria-hidden="true">
+        {currentText}
+        <span className="ml-0.5 inline-block h-[1.1em] w-[2px] animate-pulse bg-violet-500" />
+      </span>
     </span>
   );
 }

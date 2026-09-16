@@ -19,7 +19,7 @@ export default function Home() {
       <ParticleBackground />
       <CommandPalette />
       <TerminalModal />
-      <main className="relative z-10 flex-1">
+      <main id="main-content" className="relative z-10 flex-1">
         <Hero />
         <About />
         <Projects />

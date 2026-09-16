@@ -79,9 +79,47 @@ export default function Hero() {
           <span className="font-medium text-gray-900">ZopSmart</span>.
         </p>
 
+        {/* CTAs */}
+        <div
+          className={`mb-12 flex flex-wrap items-center justify-center gap-3 transition-all duration-700 delay-500 ${
+            isInView ? "animate-fade-in-up" : "animate-hidden"
+          }`}
+        >
+          <a
+            href="#projects"
+            className="magnetic-btn inline-flex items-center gap-2 rounded-full bg-gray-900 px-7 py-3.5 text-sm font-medium text-white shadow-lg shadow-gray-900/20 transition-all hover:bg-gray-800 hover:shadow-xl"
+            data-cursor="Explore"
+          >
+            View my work
+            <span aria-hidden="true">↓</span>
+          </a>
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            className="magnetic-btn inline-flex items-center gap-2 rounded-full border border-gray-300 bg-white px-7 py-3.5 text-sm font-medium text-gray-700 shadow-sm transition-all hover:border-gray-400 hover:text-gray-900 hover:shadow-md"
+            data-cursor="Resume"
+          >
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+              />
+            </svg>
+            Résumé
+          </a>
+        </div>
+
         {/* Social links */}
         <div
-          className={`mt-16 flex items-center justify-center gap-4 transition-all duration-700 delay-700 ${
+          className={`mt-10 flex items-center justify-center gap-4 transition-all duration-700 delay-700 ${
             isInView ? "animate-fade-in-up" : "animate-hidden"
           }`}
         >
