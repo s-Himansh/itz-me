@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 
-const siteUrl = "https://itz-me-eight.vercel.app";
+export const dynamic = "force-static";
+
+const siteUrl = "https://itz-me-himanshu.pages.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

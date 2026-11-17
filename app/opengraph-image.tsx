@@ -1,5 +1,7 @@
 import { ImageResponse } from "next/og";
 
+export const dynamic = "force-static";
+
 export const alt = "Himanshu Sharma — Software Development Engineer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -95,8 +97,8 @@ export default function OpengraphImage() {
             fontSize: 24,
           }}
         >
-          <div style={{ display: "flex" }}>ZopSmart Technology</div>
-          <div style={{ display: "flex" }}>itz-me-eight.vercel.app</div>
+          <div style={{ display: "flex" }}>Software Development Engineer</div>
+          <div style={{ display: "flex" }}>itz-me-himanshu.pages.dev</div>
         </div>
       </div>
     ),
