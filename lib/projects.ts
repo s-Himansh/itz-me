@@ -8,6 +8,14 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Cairn",
+    description:
+      "Desktop app for browsing and editing SQL and NoSQL databases with guard rails against expensive mistakes. Follow foreign keys with one click, explore a record's relationships, view an interactive schema map, and infer missing relationships by checking column names against real data. Includes column insights, CSV import with dry-run, safe editing, saved queries, an opt-in SQL assistant that sees only names, and encrypted credentials in the system keychain. Packaged builds for macOS and Windows.",
+    tech: ["Python", "SQLite", "PostgreSQL", "MySQL", "MongoDB", "Redis", "Cassandra", "pywebview"],
+    github: "https://github.com/s-Himansh/db-visualizer",
+    demo: "https://s-himansh.github.io/db-visualizer/",
+  },
+  {
     title: "Sharded LRU Cache",
     description:
       "High-performance, partitioned sliding-window LRU cache in Go with real-time WebSocket dashboard. Features 16-shard concurrent access via FNV-1a hashing, Prometheus metrics, REST API, Next.js frontend with live shard visualization, hit rate chart, and interactive key/value management.",
