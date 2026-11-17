@@ -6,7 +6,6 @@ interface Command {
   id: string;
   label: string;
   description: string;
-  shortcut: string;
   section: string | null;
   icon: React.ReactNode;
   category: "navigation" | "links" | "actions";
@@ -16,8 +15,7 @@ const commands: Command[] = [
   {
     id: "home",
     label: "Home",
-    description: "Go to homepage",
-    shortcut: "⌘H",
+    description: "Back to the top",
     section: "home",
     icon: (
       <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
@@ -28,9 +26,8 @@ const commands: Command[] = [
   },
   {
     id: "about",
-    label: "About",
-    description: "Learn about me",
-    shortcut: "⌘A",
+    label: "Stack",
+    description: "Skills and what I'm learning",
     section: "about",
     icon: (
       <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
@@ -42,8 +39,7 @@ const commands: Command[] = [
   {
     id: "projects",
     label: "Projects",
-    description: "View my work",
-    shortcut: "⌘P",
+    description: "Things I've built",
     section: "projects",
     icon: (
       <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
@@ -55,8 +51,7 @@ const commands: Command[] = [
   {
     id: "experience",
     label: "Experience",
-    description: "View my journey",
-    shortcut: "⌘E",
+    description: "Where I've worked",
     section: "experience",
     icon: (
       <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
@@ -68,8 +63,7 @@ const commands: Command[] = [
   {
     id: "contact",
     label: "Contact",
-    description: "Get in touch",
-    shortcut: "⌘C",
+    description: "Email, phone and links",
     section: "contact",
     icon: (
       <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
@@ -81,8 +75,7 @@ const commands: Command[] = [
   {
     id: "terminal",
     label: "Terminal",
-    description: "Interactive terminal to explore",
-    shortcut: "⌘T",
+    description: "Open the terminal",
     section: null,
     icon: (
       <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
@@ -92,23 +85,9 @@ const commands: Command[] = [
     category: "navigation",
   },
   {
-    id: "learning",
-    label: "Currently Learning",
-    description: "What I'm exploring now",
-    shortcut: "⌘L",
-    section: "learning",
-    icon: (
-      <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
-      </svg>
-    ),
-    category: "navigation",
-  },
-  {
     id: "resume",
-    label: "Download Resume",
-    description: "Get my PDF resume",
-    shortcut: "⌘D",
+    label: "Résumé",
+    description: "Open the PDF",
     section: null,
     icon: (
       <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
@@ -119,9 +98,8 @@ const commands: Command[] = [
   },
   {
     id: "github",
-    label: "GitHub Profile",
-    description: "View my repositories",
-    shortcut: "⌘G",
+    label: "GitHub",
+    description: "My repositories",
     section: null,
     icon: (
       <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -132,9 +110,8 @@ const commands: Command[] = [
   },
   {
     id: "linkedin",
-    label: "LinkedIn Profile",
-    description: "Connect with me",
-    shortcut: "⌘L",
+    label: "LinkedIn",
+    description: "My profile",
     section: null,
     icon: (
       <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -254,169 +231,81 @@ export default function CommandPalette() {
 
   if (!isOpen) return null;
 
+  const close = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+    }, 150);
+  };
+
+  const groups = [
+    ["Navigate", groupedCommands.navigation],
+    ["Actions", groupedCommands.actions],
+    ["Links", groupedCommands.links],
+  ] as const;
   let globalIndex = 0;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh]">
-      {/* Backdrop */}
-      <div
-        className={`absolute inset-0 transition-all duration-300 ${
-          isClosing ? "bg-black/0 backdrop-blur-0" : "bg-black/40 backdrop-blur-md"
-        }`}
-        onClick={() => {
-          setIsClosing(true);
-          setTimeout(() => {
-            setIsOpen(false);
-            setIsClosing(false);
-          }, 150);
-        }}
-      />
+    <div className="fixed inset-0 z-[100] flex items-start justify-center px-4 pt-[15vh]">
+      <div className="absolute inset-0 bg-ink/40" onClick={close} />
 
-      {/* Palette */}
       <div
-        className={`relative w-full max-w-xl overflow-hidden rounded-3xl border border-gray-200/80 bg-white shadow-2xl shadow-black/20 transition-all duration-300 ${
-          isClosing
-            ? "scale-95 opacity-0 translate-y-4"
-            : "scale-100 opacity-100 translate-y-0"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Command palette"
+        className={`relative w-full max-w-xl border-2 border-ink bg-white shadow-[6px_6px_0_#111] transition-all duration-150 ${
+          isClosing ? "translate-y-2 opacity-0" : "translate-y-0 opacity-100"
         }`}
       >
-        {/* Glow effect */}
-        <div className="absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-gradient-to-br from-violet-400/30 to-purple-400/30 blur-3xl" />
-
-        {/* Search input */}
-        <div className="relative flex items-center gap-3 border-b border-gray-100 px-5 py-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 text-white shadow-lg shadow-violet-500/30">
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-            </svg>
-          </div>
+        <div className="flex items-center gap-3 border-b-2 border-ink px-5 py-4">
           <input
             ref={inputRef}
             type="text"
+            aria-label="Search commands"
             placeholder="Search commands..."
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
-            className="flex-1 bg-transparent text-base text-gray-900 outline-none placeholder:text-gray-400"
+            className="flex-1 bg-transparent text-lg font-semibold text-ink outline-none placeholder:text-graphite/50"
           />
-          <kbd className="rounded-lg border border-gray-200 bg-gray-50 px-2.5 py-1 text-[11px] font-medium text-gray-500 transition-colors group-hover:bg-gray-100">
-            ESC
-          </kbd>
+          <kbd className="border-2 border-ink px-2 py-0.5 text-xs font-bold">Esc</kbd>
         </div>
 
-        {/* Commands list */}
         <div ref={listRef} className="max-h-[400px] overflow-y-auto p-2">
           {filtered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-100 text-gray-400">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
-                </svg>
-              </div>
-              <p className="text-sm font-medium text-gray-500">No results found</p>
-              <p className="mt-1 text-xs text-gray-400">Try a different search term</p>
-            </div>
+            <p className="px-3 py-10 text-center text-graphite">No match. Try a different word.</p>
           ) : (
-            <div className="space-y-4">
-              {/* Navigation */}
-              {groupedCommands.navigation.length > 0 && (
-                <div>
-                  <div className="px-3 py-2">
-                    <span className="text-[11px] font-semibold tracking-wider text-gray-400 uppercase">
-                      Navigate
-                    </span>
+            groups.map(
+              ([title, items]) =>
+                items.length > 0 && (
+                  <div key={title} className="mb-2">
+                    <p className="px-3 py-2 text-sm font-bold text-graphite">{title}</p>
+                    {items.map((cmd) => {
+                      const currentIndex = globalIndex++;
+                      return (
+                        <CommandItem
+                          key={cmd.id}
+                          cmd={cmd}
+                          isSelected={currentIndex === selectedIndex}
+                          index={currentIndex}
+                          onHover={() => setSelectedIndex(currentIndex)}
+                          onClick={() => executeCommand(cmd)}
+                        />
+                      );
+                    })}
                   </div>
-                  {groupedCommands.navigation.map((cmd) => {
-                    const currentIndex = globalIndex++;
-                    return (
-                      <CommandItem
-                        key={cmd.id}
-                        cmd={cmd}
-                        isSelected={currentIndex === selectedIndex}
-                        index={currentIndex}
-                        onHover={() => setSelectedIndex(currentIndex)}
-                        onClick={() => executeCommand(cmd)}
-                      />
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Actions */}
-              {groupedCommands.actions.length > 0 && (
-                <div>
-                  <div className="px-3 py-2">
-                    <span className="text-[11px] font-semibold tracking-wider text-gray-400 uppercase">
-                      Actions
-                    </span>
-                  </div>
-                  {groupedCommands.actions.map((cmd) => {
-                    const currentIndex = globalIndex++;
-                    return (
-                      <CommandItem
-                        key={cmd.id}
-                        cmd={cmd}
-                        isSelected={currentIndex === selectedIndex}
-                        index={currentIndex}
-                        onHover={() => setSelectedIndex(currentIndex)}
-                        onClick={() => executeCommand(cmd)}
-                      />
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Links */}
-              {groupedCommands.links.length > 0 && (
-                <div>
-                  <div className="px-3 py-2">
-                    <span className="text-[11px] font-semibold tracking-wider text-gray-400 uppercase">
-                      Links
-                    </span>
-                  </div>
-                  {groupedCommands.links.map((cmd) => {
-                    const currentIndex = globalIndex++;
-                    return (
-                      <CommandItem
-                        key={cmd.id}
-                        cmd={cmd}
-                        isSelected={currentIndex === selectedIndex}
-                        index={currentIndex}
-                        onHover={() => setSelectedIndex(currentIndex)}
-                        onClick={() => executeCommand(cmd)}
-                      />
-                    );
-                  })}
-                </div>
-              )}
-            </div>
+                ),
+            )
           )}
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between border-t border-gray-100 bg-gray-50/50 px-5 py-3">
-          <div className="flex items-center gap-4 text-[11px] text-gray-400">
-            <span className="flex items-center gap-1.5">
-              <kbd className="rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[10px] font-medium">↑</kbd>
-              <kbd className="rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[10px] font-medium">↓</kbd>
-              <span>navigate</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <kbd className="rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[10px] font-medium">↵</kbd>
-              <span>select</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <kbd className="rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[10px] font-medium">esc</kbd>
-              <span>close</span>
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-gray-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-violet-500" />
-            <span>Powered by</span>
-            <span className="font-medium text-gray-600">⌘K</span>
-          </div>
+        <div className="flex items-center gap-5 border-t-2 border-ink px-5 py-3 text-sm text-graphite">
+          <span><kbd className="border border-ink px-1.5 font-bold text-ink">↑↓</kbd> move</span>
+          <span><kbd className="border border-ink px-1.5 font-bold text-ink">Enter</kbd> open</span>
+          <span><kbd className="border border-ink px-1.5 font-bold text-ink">Esc</kbd> close</span>
         </div>
       </div>
     </div>
@@ -441,34 +330,17 @@ function CommandItem({
       data-index={index}
       onClick={onClick}
       onMouseEnter={onHover}
-      className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-150 ${
-        isSelected
-          ? "bg-gradient-to-r from-violet-50 to-purple-50 text-gray-900"
-          : "text-gray-600 hover:bg-gray-50"
+      className={`flex w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left ${
+        isSelected ? "bg-ink text-white" : "text-ink"
       }`}
     >
-      <div
-        className={`flex h-9 w-9 items-center justify-center rounded-xl transition-all duration-200 ${
-          isSelected
-            ? "bg-gradient-to-br from-violet-500 to-purple-500 text-white shadow-md shadow-violet-500/30"
-            : "bg-gray-100 text-gray-500 group-hover:bg-gray-200"
-        }`}
-      >
+      <span className={`flex h-9 w-9 shrink-0 items-center justify-center border-2 ${isSelected ? "border-white" : "border-ink"}`}>
         {cmd.icon}
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-medium text-gray-900">{cmd.label}</div>
-        <div className="text-xs text-gray-400 truncate">{cmd.description}</div>
-      </div>
-      <kbd
-        className={`rounded-lg border px-2 py-1 text-[10px] font-medium transition-colors ${
-          isSelected
-            ? "border-violet-200 bg-violet-100 text-violet-600"
-            : "border-gray-200 bg-gray-50 text-gray-400"
-        }`}
-      >
-        {cmd.shortcut}
-      </kbd>
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block font-bold">{cmd.label}</span>
+        <span className={`block truncate text-sm ${isSelected ? "text-white/75" : "text-graphite"}`}>{cmd.description}</span>
+      </span>
     </button>
   );
 }

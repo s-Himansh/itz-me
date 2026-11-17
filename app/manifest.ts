@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Himanshu Sharma — Software Development Engineer",
     short_name: "Himanshu",
     description:
-      "Software Development Engineer at ZopSmart. Building Go microservices, event-driven systems, and cloud infrastructure.",
+      "Software Development Engineer. Building Go microservices, event-driven systems, and cloud infrastructure.",
     start_url: "/",
     display: "standalone",
     background_color: "#fafafa",

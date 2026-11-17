@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { projects } from "@/lib/projects";
 
 interface TerminalLine {
   type: "input" | "output" | "error" | "ascii";
@@ -8,12 +9,12 @@ interface TerminalLine {
 }
 
 const asciiArt = `
- ██╗  ██╗██╗███████╗███████╗ ██████╗
- ██║  ██║██║██╔════╝██╔════╝██╔════╝
- ███████║██║███████╗█████╗  ██║     
- ██╔══██║██║╚════██║██╔══╝  ██║     
- ██║  ██║██║███████║███████╗╚██████╗
- ╚═╝  ╚═╝╚═╝╚══════╝╚══════╝ ╚═════╝`;
+ ██╗  ██╗███████╗
+ ██║  ██║██╔════╝
+ ███████║███████╗
+ ██╔══██║╚════██║
+ ██║  ██║███████║
+ ╚═╝  ╚═╝╚══════╝`;
 
 const commands: Record<string, () => TerminalLine[]> = {
   help: () => [
@@ -38,57 +39,44 @@ const commands: Record<string, () => TerminalLine[]> = {
     { type: "output", content: "    ls           - List sections" },
     { type: "output", content: "    pwd          - Current directory" },
     { type: "output", content: "" },
-    { type: "output", content: "  Tip: Use ↑↓ arrows for history, Tab for autocomplete" },
+    { type: "output", content: "  Tip: arrow keys for history, Tab to complete a command" },
   ],
 
   whoami: () => [
     { type: "output", content: "Himanshu Sharma" },
-    { type: "output", content: "Software Development Engineer @ ZopSmart" },
+    { type: "output", content: "Software Development Engineer" },
     { type: "output", content: "" },
-    { type: "output", content: "Building Go microservices, event-driven systems, and cloud infrastructure." },
+    { type: "output", content: "Go and DevOps: backend services, Kubernetes, Terraform and cloud infrastructure." },
     { type: "output", content: "" },
     { type: "output", content: "I enjoy solving complex problems in distributed systems and writing code that scales." },
   ],
 
   skills: () => [
-    { type: "output", content: "Languages & Frameworks:" },
-    { type: "output", content: "  Go (Gin, Gofr), Java, SQL, JavaScript, TypeScript" },
-    { type: "output", content: "" },
-    { type: "output", content: "Cloud & Infrastructure:" },
-    { type: "output", content: "  Azure, Kubernetes, Docker, Terraform, AWS, Linux" },
-    { type: "output", content: "" },
-    { type: "output", content: "Datastores & Tooling:" },
-    { type: "output", content: "  MySQL, Cassandra, MongoDB, Prometheus, Grafana, GitHub Actions" },
-    { type: "output", content: "" },
-    { type: "output", content: "Concepts:" },
-    { type: "output", content: "  Microservices, Event-Driven Architecture, Concurrency, REST APIs" },
+    { type: "output", content: "Languages:      Go, SQL, Bash" },
+    { type: "output", content: "Frameworks:     Gin, GoFr, REST, gRPC" },
+    { type: "output", content: "Cloud:          Azure, AWS, Kubernetes, Docker, Helm, Terraform, Rancher, Linux" },
+    { type: "output", content: "DevOps:         CI/CD, GitOps, GitHub Actions, ArgoCD, Harness, Prometheus, Grafana" },
+    { type: "output", content: "Data:           MySQL, PostgreSQL, Cassandra, MongoDB, Azure Event Hubs, SFTP" },
+    { type: "output", content: "Concepts:       Distributed systems, concurrency, sharding, ACID, caching, rate limiting" },
   ],
 
   experience: () => [
-    { type: "output", content: "┌─────────────────────────────────────────────────────────────────┐" },
-    { type: "output", content: "│  Software Development Engineer @ ZopSmart Technology           │" },
-    { type: "output", content: "│  Aug 2025 — Present                                             │" },
-    { type: "output", content: "│  Go-based sync engine, partitioned worker pools, Azure infra   │" },
-    { type: "output", content: "└─────────────────────────────────────────────────────────────────┘" },
+    { type: "output", content: "Software Development Engineer, ZopSmart Technology" },
+    { type: "output", content: "  Aug 2025 - Present" },
+    { type: "output", content: "  Go sync engine, partitioned worker pools, Terraform on Azure" },
     { type: "output", content: "" },
-    { type: "output", content: "┌─────────────────────────────────────────────────────────────────┐" },
-    { type: "output", content: "│  Software Development Engineer Intern @ ZopSmart Technology    │" },
-    { type: "output", content: "│  Aug 2024 — Jul 2025                                            │" },
-    { type: "output", content: "│  10+ Go microservices, Azure Event Hubs, Kubernetes, SFTP      │" },
-    { type: "output", content: "└─────────────────────────────────────────────────────────────────┘" },
+    { type: "output", content: "Software Development Engineer Intern, ZopSmart Technology" },
+    { type: "output", content: "  Aug 2024 - Jul 2025" },
+    { type: "output", content: "  10+ Go microservices, Event Hubs, Kubernetes with Helm and ArgoCD, SFTP" },
   ],
 
   projects: () => [
-    { type: "output", content: "Pinned Projects:" },
+    ...projects.map((p, i) => ({
+      type: "output" as const,
+      content: `  ${i + 1}. ${p.title.padEnd(28)} ${p.tech.slice(0, 3).join(", ")}`,
+    })),
     { type: "output", content: "" },
-    { type: "output", content: "  1. Sharded LRU Cache        - Concurrent cache with FNV-1a hashing" },
-    { type: "output", content: "  2. Partitioned API Throttler - Rate limiter with Prometheus metrics" },
-    { type: "output", content: "  3. DAG                      - Directed Acyclic Graph implementation" },
-    { type: "output", content: "  4. Makarov Chain Reaction   - Markov Chain simulation in Go" },
-    { type: "output", content: "  5. Transfer Agent           - Agent-based transfer system" },
-    { type: "output", content: "  6. Hospital Management      - Full-stack Java application" },
-    { type: "output", content: "" },
-    { type: "output", content: "  → github.com/s-Himansh" },
+    { type: "output", content: "  github.com/s-Himansh" },
   ],
 
   education: () => [
@@ -98,24 +86,24 @@ const commands: Record<string, () => TerminalLine[]> = {
   ],
 
   contact: () => [
-    { type: "output", content: "Let's connect!" },
+    { type: "output", content: "Contact" },
     { type: "output", content: "" },
     { type: "output", content: "  Email:    sharma1966himanshu@gmail.com" },
     { type: "output", content: "  GitHub:   github.com/s-Himansh" },
     { type: "output", content: "  LinkedIn: linkedin.com/in/himanshu1966" },
-    { type: "output", content: "  Phone:    +91 6280317558" },
+    { type: "output", content: "  Phone:    +91 62803 17558" },
   ],
 
   banner: () => [{ type: "ascii", content: asciiArt }],
 
   hello: () => [
-    { type: "output", content: "Hey there! 👋 Welcome to my portfolio." },
+    { type: "output", content: "Hey there. Welcome to my portfolio." },
     { type: "output", content: "Type 'help' to see what you can do here." },
   ],
 
   clear: () => [],
 
-  ls: () => [{ type: "output", content: "about/  projects/  experience/  learning/  contact/" }],
+  ls: () => [{ type: "output", content: "projects/  experience/  stack/  contact/" }],
 
   pwd: () => [{ type: "output", content: "/home/himanshu/portfolio" }],
 
@@ -139,10 +127,10 @@ export default function TerminalModal() {
       { type: "output", content: 'Type "help" to see available commands.' },
       { type: "output", content: "" },
       { type: "output", content: "Quick start:" },
-      { type: "output", content: "  $ whoami    → Learn about me" },
-      { type: "output", content: "  $ skills    → See my tech stack" },
-      { type: "output", content: "  $ projects  → View my work" },
-      { type: "output", content: "  $ banner    → Show ASCII art" },
+      { type: "output", content: "  $ whoami    : who I am" },
+      { type: "output", content: "  $ skills    : my tech stack" },
+      { type: "output", content: "  $ projects  : things I've built" },
+      { type: "output", content: "  $ banner    : show ASCII art" },
       { type: "output", content: "" },
     ]);
     setInput("");
@@ -201,7 +189,7 @@ export default function TerminalModal() {
     if (command === "clear") {
       setLines([]);
     } else if (command === "hello" || command === "hi") {
-      newLines.push({ type: "output", content: "Hey there! 👋 Welcome to my portfolio." });
+      newLines.push({ type: "output", content: "Hey there. Welcome to my portfolio." });
       setLines(newLines);
     } else if (command === "banner" || command === "neofetch") {
       newLines.push({ type: "ascii", content: asciiArt });
@@ -257,63 +245,54 @@ export default function TerminalModal() {
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={() => setIsOpen(false)}
-      />
+      <div className="absolute inset-0 bg-ink/50" onClick={() => setIsOpen(false)} />
 
-      {/* Terminal */}
-      <div className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-gray-200 bg-[#1e1e2e] shadow-2xl animate-scale-in">
-        {/* Title bar */}
-        <div className="flex items-center justify-between border-b border-gray-700/50 bg-[#181825] px-4 py-3">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-2">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="h-3 w-3 rounded-full bg-[#f38ba8] transition-opacity hover:opacity-80"
-              />
-              <div className="h-3 w-3 rounded-full bg-[#f9e2af]" />
-              <div className="h-3 w-3 rounded-full bg-[#a6e3a1]" />
-            </div>
-            <span className="ml-4 text-xs font-medium text-gray-400">
-              himanshu@portfolio ~ terminal
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <kbd className="rounded border border-gray-700 bg-[#313244] px-2 py-0.5 text-[10px] text-gray-400">
-              ⌘J to toggle
-            </kbd>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Terminal"
+        className="animate-scale-in relative w-full max-w-3xl border-2 border-ink bg-white shadow-[6px_6px_0_#111]"
+      >
+        <div className="flex items-center justify-between border-b-2 border-ink px-4 py-2.5">
+          <span className="text-sm font-bold">himanshu@portfolio</span>
+          <div className="flex items-center gap-4 text-sm">
+            <span className="text-graphite">⌘J to toggle</span>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="cursor-pointer border-2 border-ink px-2 py-0.5 font-bold hover:bg-ink hover:text-white"
+            >
+              Close
+            </button>
           </div>
         </div>
 
-        {/* Terminal body */}
         <div
           ref={terminalRef}
-          className="h-96 overflow-y-auto p-4 font-mono text-sm"
+          className="h-96 overflow-y-auto bg-ink p-4 font-mono text-sm text-white"
           onClick={() => inputRef.current?.focus()}
         >
           {lines.map((line, i) => (
-            <div key={i} className="leading-relaxed">
-              {line.type === "input" && <span className="text-[#a6e3a1]">{line.content}</span>}
-              {line.type === "output" && <span className="text-[#cdd6f4]">{line.content}</span>}
-              {line.type === "error" && <span className="text-[#f38ba8]">{line.content}</span>}
+            <div key={i} className="whitespace-pre-wrap leading-relaxed">
+              {line.type === "input" && <span className="text-[#8f9bff]">{line.content}</span>}
+              {line.type === "output" && <span className="text-white/90">{line.content}</span>}
+              {line.type === "error" && <span className="text-amber">{line.content}</span>}
               {line.type === "ascii" && (
-                <pre className="text-[10px] leading-tight text-[#cba6f7] sm:text-xs">{line.content}</pre>
+                <pre className="text-xs leading-tight text-[#8f9bff]">{line.content}</pre>
               )}
             </div>
           ))}
 
-          {/* Input line */}
           <div className="flex items-center gap-2">
-            <span className="text-[#a6e3a1]">$</span>
+            <span className="text-[#8f9bff]">$</span>
             <input
               ref={inputRef}
               type="text"
+              aria-label="Terminal input"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent text-[#cdd6f4] outline-none placeholder:text-gray-500"
+              className="flex-1 bg-transparent text-white outline-none placeholder:text-white/40"
               placeholder="Type 'help' to get started..."
             />
           </div>

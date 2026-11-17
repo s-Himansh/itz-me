@@ -1,24 +1,22 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
-import Footer from "@/components/Footer";
+import { Bricolage_Grotesque, Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const bricolage = Bricolage_Grotesque({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
 });
 
-const inter = Inter({
+const schibsted = Schibsted_Grotesk({
   variable: "--font-body",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://itz-me-eight.vercel.app"),
+  metadataBase: new URL("https://itz-me-himanshu.pages.dev"),
   title: "Himanshu Sharma — Software Development Engineer",
   description:
-    "Software Development Engineer at ZopSmart. Building Go microservices, event-driven systems, and cloud infrastructure.",
+    "Software Development Engineer. Building Go microservices, event-driven systems, and cloud infrastructure.",
   keywords: [
     "Himanshu Sharma",
     "Software Engineer",
@@ -26,24 +24,23 @@ export const metadata: Metadata = {
     "Backend Engineer",
     "Microservices",
     "Kubernetes",
-    "ZopSmart",
   ],
   authors: [{ name: "Himanshu Sharma", url: "https://github.com/s-Himansh" }],
   creator: "Himanshu Sharma",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://itz-me-eight.vercel.app",
+    url: "https://itz-me-himanshu.pages.dev",
     siteName: "Himanshu Sharma — Portfolio",
     title: "Himanshu Sharma — Software Development Engineer",
     description:
-      "Software Development Engineer at ZopSmart. Building Go microservices, event-driven systems, and cloud infrastructure.",
+      "Software Development Engineer. Building Go microservices, event-driven systems, and cloud infrastructure.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Himanshu Sharma — Software Development Engineer",
     description:
-      "Software Development Engineer at ZopSmart. Building Go microservices, event-driven systems, and cloud infrastructure.",
+      "Software Development Engineer. Building Go microservices, event-driven systems, and cloud infrastructure.",
   },
   robots: {
     index: true,
@@ -56,8 +53,7 @@ const personJsonLd = {
   "@type": "Person",
   name: "Himanshu Sharma",
   jobTitle: "Software Development Engineer",
-  worksFor: { "@type": "Organization", name: "ZopSmart Technology" },
-  url: "https://itz-me-eight.vercel.app",
+  url: "https://itz-me-himanshu.pages.dev",
   email: "mailto:sharma1966himanshu@gmail.com",
   sameAs: [
     "https://github.com/s-Himansh",
@@ -80,17 +76,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
+      className={`${bricolage.variable} ${schibsted.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[300] focus:rounded-full focus:bg-gray-900 focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-white focus:shadow-lg"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[300] focus:bg-white focus:px-5 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-ink focus:border-2 focus:border-ink"
         >
           Skip to content
         </a>
         {children}
-        <Footer />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

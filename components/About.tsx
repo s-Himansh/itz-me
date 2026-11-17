@@ -1,138 +1,95 @@
-"use client";
-
-import { useInView } from "@/hooks/useInView";
+import ShardTag from "./ShardTag";
 
 const skills = {
-  "Languages & Frameworks": ["Go", "Gin", "Gofr", "Java", "SQL"],
-  "Cloud & Infrastructure": [
-    "Azure",
+  Languages: ["Go", "SQL", "Bash"],
+  "Frameworks and APIs": ["Gin", "GoFr", "REST APIs", "gRPC", "Microservices"],
+  "Cloud and infrastructure": [
+    "Azure (Event Hubs, Blob Storage)",
+    "AWS",
     "Kubernetes",
     "Docker",
+    "Helm",
     "Terraform",
-    "AWS",
+    "Rancher",
     "Linux",
   ],
-  "Datastores & Tooling": [
-    "MySQL",
-    "Cassandra",
-    "MongoDB",
+  "DevOps and observability": [
+    "CI/CD",
+    "GitOps",
     "GitHub Actions",
+    "ArgoCD",
+    "Harness",
     "Prometheus",
     "Grafana",
     "Git",
+    "Monitoring and alerting",
   ],
-  Concepts: [
-    "Microservices",
-    "Event-Driven Architecture",
+  "Datastores and messaging": [
+    "MySQL",
+    "PostgreSQL",
+    "Cassandra",
+    "MongoDB",
+    "Azure Event Hubs (Kafka-compatible)",
+    "Event-driven architecture",
+    "SFTP",
+  ],
+  "Core concepts": [
+    "Distributed systems",
     "Concurrency",
-    "Data Partitioning",
-    "REST APIs",
-    "ACID Transactions",
+    "Data partitioning and sharding",
+    "ACID transactions",
+    "Caching",
+    "Rate limiting",
+    "System design",
   ],
 };
 
-export default function About() {
-  const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 });
-  const { ref: imageRef, isInView: imageInView } = useInView({ threshold: 0.2 });
-  const { ref: contentRef, isInView: contentInView } = useInView({ threshold: 0.1 });
+const learning = [
+  ["Distributed systems", "consensus algorithms and fault tolerance"],
+  ["System design", "scalable architecture patterns and their trade-offs"],
+  ["Cloud native", "serverless architectures and cloud-native patterns"],
+  ["Performance", "profiling and tuning high-throughput Go applications"],
+];
 
+export default function About() {
   return (
-    <section id="about" className="relative px-6 py-28">
-      <div className="mx-auto max-w-5xl">
-        {/* Section header */}
-        <div
-          ref={sectionRef}
-          className={`mb-20 text-center transition-all duration-700 ${
-            isInView ? "animate-fade-in-up" : "animate-hidden"
-          }`}
-        >
-          <p className="mb-3 text-sm font-semibold tracking-widest text-violet-600 uppercase">
-            About
+    <section id="about" className="pt-24">
+      <h2 className="mb-10 font-heading text-5xl font-extrabold sm:text-6xl">What I work with</h2>
+      <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
+        <div className="box relative" data-shard-key="stack">
+          <ShardTag k="stack" />
+          <p className="max-w-prose text-xl leading-relaxed">
+            I&apos;m a Software Development Engineer focused on Go and DevOps: backend
+            services, Kubernetes, Terraform and cloud infrastructure. I like code and
+            infrastructure that stay simple, easy to maintain and built to last.
           </p>
-          <h2 className="text-4xl font-bold text-gray-900">A bit about me</h2>
+          <dl className="mt-8 space-y-5">
+            {Object.entries(skills).map(([group, items]) => (
+              <div key={group}>
+                <dt className="mb-2 font-heading text-lg font-extrabold">{group}</dt>
+                <dd>
+                  <ul className="flex flex-wrap gap-2">
+                    {items.map((t) => (
+                      <li key={t} className="border border-ink px-2 py-0.5 text-sm font-semibold">{t}</li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        <div className="grid gap-16 md:grid-cols-[1fr_2fr]">
-          {/* Photo */}
-          <div
-            ref={imageRef}
-            className={`flex items-start justify-center transition-all duration-700 delay-200 ${
-              imageInView ? "animate-fade-in-left" : "animate-hidden"
-            }`}
-          >
-            <div className="relative group">
-              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-violet-200 to-purple-200 opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-60" />
-              <div className="relative h-56 w-56 overflow-hidden rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 shadow-xl transition-transform duration-500 group-hover:scale-105">
-                <div className="flex h-full w-full items-center justify-center text-5xl font-bold text-gray-400">
-                  HS
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Content */}
-          <div
-            ref={contentRef}
-            className={`transition-all duration-700 delay-300 ${
-              contentInView ? "animate-fade-in-right" : "animate-hidden"
-            }`}
-          >
-            <p className="mb-6 text-lg leading-relaxed text-gray-600">
-              Software Development Engineer at{" "}
-              <span className="font-semibold text-gray-900">ZopSmart</span>,
-              focused on backend systems and cloud infrastructure. I work
-              primarily with{" "}
-              <span className="font-medium text-gray-900">
-                Go
-              </span>{" "}
-              for building high-performance services and{" "}
-              <span className="font-medium text-gray-900">
-                JavaScript
-              </span>{" "}
-              for full-stack development.
-            </p>
-            <p className="mb-10 text-lg leading-relaxed text-gray-600">
-              Comfortable across the stack—from{" "}
-              <span className="font-medium text-gray-900">
-                designing microservices
-              </span>{" "}
-              to{" "}
-              <span className="font-medium text-gray-900">
-                deploying on Kubernetes
-              </span>
-              . I believe in writing code that&apos;s simple, maintainable,
-              and built to last.
-            </p>
-
-            <div className="space-y-6">
-              {Object.entries(skills).map(([category, items], catIndex) => (
-                <div
-                  key={category}
-                  className={`transition-all duration-500 ${
-                    contentInView
-                      ? "animate-fade-in-up"
-                      : "animate-hidden"
-                  }`}
-                  style={{ animationDelay: `${400 + catIndex * 100}ms` }}
-                >
-                  <h3 className="mb-3 text-xs font-semibold tracking-wider text-gray-400 uppercase">
-                    {category}
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {items.map((skill, i) => (
-                      <span
-                        key={skill}
-                        className="rounded-full border border-gray-200 bg-white px-4 py-1.5 text-xs font-medium text-gray-600 shadow-sm transition-all duration-300 hover:border-violet-300 hover:bg-violet-50 hover:text-violet-700 hover:shadow-md cursor-default"
-                        style={{ animationDelay: `${i * 50}ms` }}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div id="learning" data-shard-key="learning" className="box relative">
+          <ShardTag k="learning" />
+          <h3 className="mb-5 font-heading text-2xl font-extrabold">What I&apos;m learning now</h3>
+          <ul className="space-y-4">
+            {learning.map(([topic, detail]) => (
+              <li key={topic}>
+                <p className="font-heading text-lg font-extrabold">{topic}</p>
+                <p className="text-graphite">{detail}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
